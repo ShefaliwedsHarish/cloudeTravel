@@ -6,11 +6,95 @@ interface Props {
     children: ReactNode;
 }
 
+const mobileResponsiveStyles = `
+    @media (max-width: 768px) {
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .landing-topbar {
+            display: none !important;
+        }
+
+        .landing-navbar {
+            padding: 0 15px !important;
+            height: auto !important;
+            min-height: 60px !important;
+            flex-wrap: nowrap;
+        }
+
+        .navbar-logo {
+            min-width: auto !important;
+            flex-shrink: 0;
+            margin-right: auto;
+        }
+
+        .navbar-logo img {
+            width: 45px !important;
+            height: 45px !important;
+        }
+
+        .navbar-menu {
+            display: none !important;
+        }
+
+        .navbar-cta {
+            display: none !important;
+        }
+
+        .navbar-hamburger {
+            display: flex !important;
+        }
+
+        .mobile-menu {
+            width: 100%;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .mobile-menu.open {
+            max-height: 500px;
+        }
+
+        .mobile-menu ul {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 15px 0;
+        }
+
+        .landing-footer {
+            padding: 30px 15px !important;
+        }
+
+        .footer-grid {
+            grid-template-columns: 1fr !important;
+            gap: 20px !important;
+        }
+
+        .footer-bottom {
+            flex-direction: column !important;
+            gap: 15px !important;
+            text-align: center !important;
+        }
+    }
+
+    @media (min-width: 769px) {
+        .navbar-hamburger {
+            display: none !important;
+        }
+    }
+`;
+
+
 /**
  * Landing layout with header, footer and content area
  */
 export default function LandingLayout({ children }: Props) {
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [contactInfo, setContactInfo] = useState<any>(null);
 
     useEffect(() => {
@@ -47,9 +131,10 @@ export default function LandingLayout({ children }: Props) {
             <Head>
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
             </Head>
+            <style>{mobileResponsiveStyles}</style>
             <div style={{ fontFamily: "'Open Sans', sans-serif", background: '#fff', color: '#333', fontSize: '13px', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             {/* TOP BAR */}
-            <div style={{ background: '#003d82', padding: '6px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div className="landing-topbar" style={{ background: '#003d82', padding: '6px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                     <div style={{ width: 34, height: 34, border: '1px solid rgba(255,255,255,.3)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '13px' }}>
                         <i className="fa fa-globe"></i>
@@ -72,11 +157,21 @@ export default function LandingLayout({ children }: Props) {
             </div>
 
             {/* NAVBAR */}
-            <nav style={{ background: '#003d82', padding: '0 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '70px', borderTop: '1px solid rgba(255,255,255,.1)' }}>
-                <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', minWidth: '120px' }}>
-                    <img src="/images/logo.png" alt="CloudTravel" style={{ width: 40, height: 40 }} />
+            <nav className="landing-navbar" style={{ background: '#003d82', padding: '0 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '70px', borderTop: '1px solid rgba(255,255,255,.1)' }}>
+                <Link className="navbar-logo" href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', minWidth: '120px' }}>
+                    <img src="/images/logo.png" alt="CloudTravel" style={{ width: 50, height: 50 }} />
                 </Link>
-                <ul style={{ display: 'flex', alignItems: 'center', gap: '28px', listStyle: 'none', margin: 0, padding: 0, flex: 1, justifyContent: 'center' }}>
+
+                {/* Hamburger Button */}
+                <button
+                    className="navbar-hamburger"
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    style={{ background: 'none', border: 'none', color: '#fff', fontSize: '20px', cursor: 'pointer', padding: '8px', marginLeft: 'auto' }}
+                >
+                    <i className={`fa ${mobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
+                </button>
+
+                <ul className="navbar-menu" style={{ display: 'flex', alignItems: 'center', gap: '28px', listStyle: 'none', margin: 0, padding: 0, flex: 1, justifyContent: 'center' }}>
                     <li><Link href="/" style={{ color: '#ff6b35', fontSize: '14px', fontWeight: 500, textDecoration: 'none', borderBottom: '3px solid #ff6b35', paddingBottom: '5px' }}>Home</Link></li>
                     <li><Link href="/tours" style={{ color: '#fff', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>Tours</Link></li>
                     <li><Link href="/tickets" style={{ color: '#fff', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>Tickets</Link></li>
@@ -142,8 +237,20 @@ export default function LandingLayout({ children }: Props) {
                     <li><Link href="/about-us" style={{ color: '#fff', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>About Us</Link></li>
                     <li><Link href="/contact-us" style={{ color: '#fff', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>Contact Us</Link></li>
                 </ul>
-                <a href="tel:+1234567890" style={{ background: '#ff6b35', color: '#fff', padding: '10px 22px', borderRadius: '4px', fontWeight: 700, fontSize: '13px', textDecoration: 'none', cursor: 'pointer' }}>CALL NOW</a>
+                <a className="navbar-cta" href="tel:+1234567890" style={{ background: '#ff6b35', color: '#fff', padding: '10px 22px', borderRadius: '4px', fontWeight: 700, fontSize: '13px', textDecoration: 'none', cursor: 'pointer' }}>CALL NOW</a>
             </nav>
+
+            {/* MOBILE MENU */}
+            <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`} style={{ background: '#002d63', borderTop: '1px solid rgba(255,255,255,.1)' }}>
+                <ul style={{ display: 'flex', flexDirection: 'column', gap: '10px', listStyle: 'none', margin: 0, padding: '15px 15px', textAlign: 'center' }}>
+                    <li><Link href="/" style={{ color: '#ff6b35', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>Home</Link></li>
+                    <li><Link href="/tours" style={{ color: '#fff', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>Tours</Link></li>
+                    <li><Link href="/tickets" style={{ color: '#fff', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>Tickets</Link></li>
+                    <li><Link href="/about-us" style={{ color: '#fff', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>About Us</Link></li>
+                    <li><Link href="/contact-us" style={{ color: '#fff', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>Contact Us</Link></li>
+                    <li><a href="tel:+1234567890" style={{ background: '#ff6b35', color: '#fff', padding: '8px 15px', borderRadius: '4px', fontWeight: 700, fontSize: '13px', textDecoration: 'none', display: 'inline-block' }}>CALL NOW</a></li>
+                </ul>
+            </div>
 
             {/* CONTENT */}
             <main style={{ flex: 1 }}>
@@ -156,7 +263,7 @@ export default function LandingLayout({ children }: Props) {
             </a>
 
             {/* FOOTER */}
-            <footer style={{ background: '#003d82', color: '#fff', padding: '40px', marginTop: '40px', borderTop: '1px solid rgba(255,255,255,.1)' }}>
+            <footer className="landing-footer" style={{ background: '#003d82', color: '#fff', padding: '40px', marginTop: '40px', borderTop: '1px solid rgba(255,255,255,.1)' }}>
                 <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                     {/* Logo Section */}
                     <div style={{ marginBottom: '30px', paddingBottom: '20px', borderBottom: '1px solid rgba(255,255,255,.1)' }}>
@@ -165,7 +272,7 @@ export default function LandingLayout({ children }: Props) {
                         )}
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '30px', marginBottom: '30px' }}>
+                    <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '30px', marginBottom: '30px' }}>
                         {/* About */}
                         <div>
                             <h4 style={{ fontSize: '14px', fontWeight: 700, marginBottom: '15px', color: '#ff6b35' }}>About CloudTravel</h4>
@@ -241,7 +348,7 @@ export default function LandingLayout({ children }: Props) {
                     </div>
 
                     {/* Footer Bottom */}
-                    <div style={{ borderTop: '1px solid rgba(255,255,255,.1)', paddingTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div className="footer-bottom" style={{ borderTop: '1px solid rgba(255,255,255,.1)', paddingTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <p style={{ fontSize: '11px', color: 'rgba(255,255,255,.6)', margin: 0 }}>© 2026 CloudTravel. All rights reserved.</p>
                         <div style={{ display: 'flex', gap: '15px' }}>
                             <a href="#" style={{ fontSize: '11px', color: 'rgba(255,255,255,.6)', textDecoration: 'none' }}>Privacy Policy</a>

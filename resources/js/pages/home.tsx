@@ -109,18 +109,69 @@ export default function Home() {
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
             </Head>
 
+            <style>{`
+                * {
+                    box-sizing: border-box;
+                }
+
+                @media (max-width: 768px) {
+                    .hero-section {
+                        min-height: 300px !important;
+                        padding: 20px !important;
+                    }
+                    .hero-title {
+                        font-size: 24px !important;
+                    }
+                    .hero-subtitle {
+                        font-size: 12px !important;
+                    }
+                    .hero-buttons {
+                        flex-direction: column !important;
+                        gap: 8px !important;
+                    }
+                    .hero-buttons button {
+                        padding: 8px 16px !important;
+                        font-size: 11px !important;
+                    }
+                    .offer-marquee {
+                        padding: 10px !important;
+                        font-size: 10px !important;
+                    }
+                    .tours-section {
+                        padding: 30px 15px !important;
+                    }
+                    .tours-grid {
+                        grid-template-columns: 1fr !important;
+                    }
+                    .contact-section {
+                        padding: 30px 15px !important;
+                    }
+                    .contact-grid {
+                        grid-template-columns: 1fr !important;
+                        gap: 20px !important;
+                    }
+                    input, textarea {
+                        font-size: 16px !important;
+                    }
+                    img {
+                        max-width: 100% !important;
+                        height: auto !important;
+                    }
+                }
+            `}</style>
+
             {/* HERO SECTION */}
             {heroImages.length > 0 && (
-            <div style={{ position: 'relative', minHeight: '420px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', overflow: 'hidden', backgroundImage: `url(${heroImages[currentHeroIndex]?.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', transition: 'background-image 0.5s ease-in-out' }}>
+            <div className="hero-section" style={{ position: 'relative', minHeight: '420px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', overflow: 'hidden', backgroundImage: `url(${heroImages[currentHeroIndex]?.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', transition: 'background-image 0.5s ease-in-out' }}>
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,20,60,.6) 0%, rgba(0,20,60,.3) 60%, rgba(0,20,60,.7) 100%)' }}></div>
                 <div style={{ position: 'relative', zIndex: 2, padding: '0 20px' }}>
-                    <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: '38px', fontWeight: 700, color: '#fff', marginBottom: '10px', textShadow: '0 2px 12px rgba(0,0,0,.5)', transition: 'opacity 0.5s ease-in-out' }}>
+                    <h1 className="hero-title" style={{ fontFamily: "'Playfair Display', serif", fontSize: '38px', fontWeight: 700, color: '#fff', marginBottom: '10px', textShadow: '0 2px 12px rgba(0,0,0,.5)', transition: 'opacity 0.5s ease-in-out' }}>
                         {heroImages[currentHeroIndex]?.title || 'Discover the World with CloudTravel'}
                     </h1>
-                    <p style={{ color: 'rgba(255,255,255,.88)', fontSize: '13px', marginBottom: '28px', lineHeight: 1.7, transition: 'opacity 0.5s ease-in-out' }}>
+                    <p className="hero-subtitle" style={{ color: 'rgba(255,255,255,.88)', fontSize: '13px', marginBottom: '28px', lineHeight: 1.7, transition: 'opacity 0.5s ease-in-out' }}>
                         {heroImages[currentHeroIndex]?.subtitle || 'Book flights, hotels, and visas seamlessly in one platform.'}
                     </p>
-                    <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                    <div className="hero-buttons" style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
                         <button onClick={() => setActiveHeroBtn('tour')} style={{ display: 'flex', alignItems: 'center', gap: '7px', background: activeHeroBtn === 'tour' ? '#ff6b35' : 'rgba(255,255,255,.15)', border: '2px solid ' + (activeHeroBtn === 'tour' ? '#ff6b35' : 'rgba(255,255,255,.7)'), color: '#fff', padding: '9px 20px', borderRadius: '4px', fontSize: '12px', fontWeight: 700, letterSpacing: '.5px', cursor: 'pointer', fontFamily: "'Open Sans', sans-serif", textTransform: 'uppercase' }}>
                             <i className="fa fa-plane"></i> TOUR
                         </button>
@@ -140,7 +191,7 @@ export default function Home() {
 
             {/* SPECIAL OFFERS SLIDER - MARQUEE STYLE */}
             {specialOffers.length > 0 && (
-                <div style={{ background: '#fff', borderBottom: '1px solid #eee', padding: '12px 0', textAlign: 'center', fontSize: '11.5px', color: '#555', overflow: 'hidden' }}>
+                <div style={{ background: '#fff', borderBottom: '1px solid #eee', padding: '12px 15px', textAlign: 'center', fontSize: '11.5px', color: '#555', overflow: 'hidden', width: '100%' }}>
                     <style>{`
                         @keyframes marqueeOffer {
                             0% {
@@ -167,7 +218,14 @@ export default function Home() {
                         .offer-marquee {
                             animation: marqueeOffer 4s ease-in-out;
                             display: inline-block;
-                            white-space: nowrap;
+                            white-space: normal;
+                            word-wrap: break-word;
+                        }
+                        @media (max-width: 768px) {
+                            .offer-marquee {
+                                white-space: normal !important;
+                                padding: 0 5px;
+                            }
                         }
                     `}</style>
                     <div className="offer-marquee" key={currentOfferIndex}>
@@ -179,15 +237,15 @@ export default function Home() {
             )}
 
             {/* TOURS SECTION */}
-            <section style={{ padding: '50px 40px', background: '#fff' }}>
+            <section className="tours-section" style={{ padding: '50px 40px', background: '#fff' }}>
                 <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                     <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-                        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '28px', color: '#003d82', marginBottom: '8px' }}>Our Tours</h2>
+                        <h2 className="tours-heading" style={{ fontFamily: "'Playfair Display', serif", fontSize: '28px', color: '#003d82', marginBottom: '8px' }}>Our Tours</h2>
                         <div style={{ width: '40px', height: '2px', background: '#ff6b35', margin: '10px auto 14px' }}></div>
                         <p style={{ color: '#777', fontSize: '12.5px', lineHeight: 1.7 }}>We understand that travel is not just about destinations. Destinations, it is about the journeys and the experiences</p>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', marginBottom: '30px' }}>
+                    <div className="tours-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', marginBottom: '30px' }}>
                         {[
                             { title: 'Beautiful Bali, Catch Vibes Now', price: '£999', image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&q=80', badge: 'AFRICA' },
                             { title: 'Moroccan Miracle 2024', price: '£1,299', image: 'https://images.unsplash.com/photo-1489749798305-4fea3ba63d60?w=400&q=80', badge: 'AFRICA' },
@@ -254,9 +312,9 @@ export default function Home() {
             </section>
 
             {/* CONTACT FORM SECTION */}
-            <section style={{ padding: '50px 40px', background: '#fff' }}>
+            <section className="contact-section" style={{ padding: '50px 40px', background: '#fff' }}>
                 <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
+                    <div className="contact-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
                         {/* Form */}
                         <div>
                             <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#003d82', marginBottom: '20px' }}>Get in Touch</h3>
@@ -281,15 +339,32 @@ export default function Home() {
 
             {/* TESTIMONIALS SECTION */}
             {testimonials.length > 0 && (
-                <section style={{ padding: '60px 40px', background: '#f5f5f5' }}>
-                    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+                <section style={{ padding: '40px 20px', background: '#f5f5f5' }}>
+                    <style>{`
+                        @media (max-width: 768px) {
+                            .testimonials-section { padding: 30px 15px; }
+                            .testimonials-nav { flex-direction: row !important; gap: 10px !important; justify-content: center !important; }
+                            .testimonials-nav button { width: 36px !important; height: 36px !important; font-size: 14px !important; flex-shrink: 0; }
+                            .testimonials-slider-container { flex: 1; overflow: hidden; min-width: 0; width: 100%; }
+                            .testimonials-slider { gap: 0 !important; }
+                            .testimonial-card { flex: 0 0 100% !important; padding: 20px !important; width: 100%; }
+                            .testimonials-heading { font-size: 22px !important; }
+                            .testimonials-paragraph { font-size: 12px !important; }
+                            .testimonials-nav {
+                                display: flex !important;
+                                align-items: center !important;
+                                gap: 10px !important;
+                            }
+                        }
+                    `}</style>
+                    <div style={{ maxWidth: '1200px', margin: '0 auto' }} className="testimonials-section">
                         <div style={{ textAlign: 'center', marginBottom: '50px' }}>
-                            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '32px', color: '#003d82', marginBottom: '12px' }}>What Our Clients Say</h2>
+                            <h2 className="testimonials-heading" style={{ fontFamily: "'Playfair Display', serif", fontSize: '32px', color: '#003d82', marginBottom: '12px' }}>What Our Clients Say</h2>
                             <div style={{ width: '50px', height: '3px', background: '#ff6b35', margin: '0 auto 15px' }}></div>
-                            <p style={{ color: '#777', fontSize: '13px', maxWidth: '500px', margin: '0 auto' }}>Discover what travelers around the world think about our services</p>
+                            <p className="testimonials-paragraph" style={{ color: '#777', fontSize: '13px', maxWidth: '500px', margin: '0 auto' }}>Discover what travelers around the world think about our services</p>
                         </div>
 
-                        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '20px' }}>
+                        <div className="testimonials-nav" style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '20px', justifyContent: 'center' }}>
                             {/* Previous Button */}
                             <button
                                 onClick={() => setCurrentTestimonialIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))}
@@ -299,10 +374,10 @@ export default function Home() {
                             </button>
 
                             {/* Testimonial Slider */}
-                            <div style={{ flex: 1, overflow: 'hidden' }}>
-                                <div style={{ display: 'flex', gap: '20px', transition: 'transform 0.5s ease-in-out', transform: `translateX(-${currentTestimonialIndex * (100 / 3)}%)`, flexWrap: 'nowrap' }}>
+                            <div className="testimonials-slider-container" style={{ flex: 1, overflow: 'hidden', minWidth: 0 }}>
+                                <div className="testimonials-slider" style={{ display: 'flex', gap: '20px', transition: 'transform 0.5s ease-in-out', transform: `translateX(-${currentTestimonialIndex * 100}%)`, flexWrap: 'nowrap' }}>
                                     {testimonials.map((testimonial) => (
-                                        <div key={testimonial.id} style={{ background: '#fff', padding: '30px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,.1)', textAlign: 'center', flex: '0 0 calc(33.333% - 13.33px)', flexShrink: 0 }}>
+                                        <div key={testimonial.id} className="testimonial-card" style={{ background: '#fff', padding: '30px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,.1)', textAlign: 'center', flex: '0 0 100%', minWidth: 0 }}>
                                             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
                                                 <img
                                                     src={testimonial.client_image}
