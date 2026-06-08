@@ -13,10 +13,6 @@ const mobileResponsiveStyles = `
             overflow-x: hidden;
         }
 
-        .landing-topbar {
-            display: none !important;
-        }
-
         .landing-navbar {
             padding: 0 15px !important;
             height: auto !important;
@@ -89,10 +85,6 @@ const mobileResponsiveStyles = `
         .mobile-menu {
             display: none !important;
         }
-
-        .landing-topbar {
-            display: flex !important;
-        }
     }
 `;
 
@@ -141,31 +133,8 @@ export default function LandingLayout({ children }: Props) {
             </Head>
             <style>{mobileResponsiveStyles}</style>
             <div style={{ fontFamily: "'Open Sans', sans-serif", background: '#fff', color: '#333', fontSize: '13px', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-            {/* TOP BAR */}
-            <div className="landing-topbar" style={{ background: '#003d82', padding: '6px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                    <div style={{ width: 34, height: 34, border: '1px solid rgba(255,255,255,.3)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '13px' }}>
-                        <i className="fa fa-globe"></i>
-                    </div>
-                    <div style={{ width: 34, height: 34, border: '1px solid rgba(255,255,255,.3)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '13px' }}>
-                        <i className="fa fa-user"></i>
-                    </div>
-                </div>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" style={{ width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', color: '#fff', background: '#4267B2', textDecoration: 'none' }}>
-                        <i className="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" style={{ width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', color: '#fff', background: '#E1306C', textDecoration: 'none' }}>
-                        <i className="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" style={{ width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', color: '#fff', background: '#25D366', textDecoration: 'none' }}>
-                        <i className="fab fa-whatsapp"></i>
-                    </a>
-                </div>
-            </div>
-
             {/* NAVBAR */}
-            <nav className="landing-navbar" style={{ background: '#003d82', padding: '0 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '70px', borderTop: '1px solid rgba(255,255,255,.1)' }}>
+            <nav className="landing-navbar" style={{ background: '#FFFFFF', padding: '0 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '70px', borderBottom: '1px solid #f0f0f0', boxShadow: '0 2px 8px rgba(0,0,0,.06)' }}>
                 <Link className="navbar-logo" href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', minWidth: '120px' }}>
                     <img src="/images/logo.png" alt="CloudTravel" style={{ width: 50, height: 50 }} />
                 </Link>
@@ -174,15 +143,15 @@ export default function LandingLayout({ children }: Props) {
                 <button
                     className="navbar-hamburger"
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    style={{ background: 'none', border: 'none', color: '#fff', fontSize: '20px', cursor: 'pointer', padding: '8px', marginLeft: 'auto' }}
+                    style={{ background: 'none', border: 'none', color: '#333', fontSize: '20px', cursor: 'pointer', padding: '8px', marginLeft: 'auto' }}
                 >
                     <i className={`fa ${mobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
                 </button>
 
                 <ul className="navbar-menu" style={{ display: 'flex', alignItems: 'center', gap: '28px', listStyle: 'none', margin: 0, padding: 0, flex: 1, justifyContent: 'center' }}>
-                    <li><Link href="/" style={{ color: '#ff6b35', fontSize: '14px', fontWeight: 500, textDecoration: 'none', borderBottom: '3px solid #ff6b35', paddingBottom: '5px' }}>Home</Link></li>
-                    <li><Link href="/tours" style={{ color: '#fff', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>Tours</Link></li>
-                    <li><Link href="/tickets" style={{ color: '#fff', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>Tickets</Link></li>
+                    <li><Link href="/" style={{ color: '#ff6b35', fontSize: '14px', fontWeight: 600, textDecoration: 'none', borderBottom: '3px solid #ff6b35', paddingBottom: '5px' }}>Home</Link></li>
+                    <li><Link href="/tours" style={{ color: '#333', fontSize: '14px', fontWeight: 500, textDecoration: 'none', transition: 'color 0.3s' }} onMouseEnter={(e) => e.currentTarget.style.color = '#ff6b35'} onMouseLeave={(e) => e.currentTarget.style.color = '#333'}>Tours</Link></li>
+                    <li><Link href="/tickets" style={{ color: '#333', fontSize: '14px', fontWeight: 500, textDecoration: 'none', transition: 'color 0.3s' }} onMouseEnter={(e) => e.currentTarget.style.color = '#ff6b35'} onMouseLeave={(e) => e.currentTarget.style.color = '#333'}>Tickets</Link></li>
 
                     {/* Visa Services Dropdown */}
                     <li
@@ -192,18 +161,20 @@ export default function LandingLayout({ children }: Props) {
                     >
                         <button
                             onClick={() => setOpenDropdown(openDropdown === 'visa' ? null : 'visa')}
-                            style={{ background: 'none', border: 'none', color: '#fff', fontSize: '14px', fontWeight: 500, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer', padding: 0 }}
+                            style={{ background: 'none', border: 'none', color: '#333', fontSize: '14px', fontWeight: 500, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer', padding: 0, transition: 'color 0.3s' }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = '#ff6b35'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = '#333'}
                         >
                             Visa Services <i className="fa fa-chevron-down" style={{ fontSize: '10px' }}></i>
                         </button>
                         {openDropdown === 'visa' && (
-                            <div style={{ position: 'absolute', top: '100%', left: 0, background: '#002d63', minWidth: '200px', borderRadius: '4px', marginTop: '5px', boxShadow: '0 4px 12px rgba(0,0,0,.15)', zIndex: 1000 }}>
+                            <div style={{ position: 'absolute', top: '100%', left: 0, background: '#fff', minWidth: '200px', borderRadius: '6px', marginTop: '8px', boxShadow: '0 4px 16px rgba(0,0,0,.12)', zIndex: 1000, border: '1px solid #f0f0f0' }}>
                                 {visaServices.map((service) => (
                                     <a
                                         key={service}
                                         href="#"
-                                        style={{ display: 'block', padding: '12px 15px', color: '#fff', textDecoration: 'none', fontSize: '13px', borderBottom: '1px solid rgba(255,255,255,.1)', transition: 'background 0.3s' }}
-                                        onMouseEnter={(e) => (e.currentTarget.style.background = '#1a1f3a')}
+                                        style={{ display: 'block', padding: '12px 15px', color: '#333', textDecoration: 'none', fontSize: '13px', borderBottom: '1px solid #f5f5f5', transition: 'background 0.3s' }}
+                                        onMouseEnter={(e) => (e.currentTarget.style.background = '#f9f9f9')}
                                         onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                                     >
                                         {service}
@@ -221,18 +192,20 @@ export default function LandingLayout({ children }: Props) {
                     >
                         <button
                             onClick={() => setOpenDropdown(openDropdown === 'other' ? null : 'other')}
-                            style={{ background: 'none', border: 'none', color: '#fff', fontSize: '14px', fontWeight: 500, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer', padding: 0 }}
+                            style={{ background: 'none', border: 'none', color: '#333', fontSize: '14px', fontWeight: 500, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer', padding: 0, transition: 'color 0.3s' }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = '#ff6b35'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = '#333'}
                         >
                             Other Services <i className="fa fa-chevron-down" style={{ fontSize: '10px' }}></i>
                         </button>
                         {openDropdown === 'other' && (
-                            <div style={{ position: 'absolute', top: '100%', left: 0, background: '#002d63', minWidth: '200px', borderRadius: '4px', marginTop: '5px', boxShadow: '0 4px 12px rgba(0,0,0,.15)', zIndex: 1000 }}>
+                            <div style={{ position: 'absolute', top: '100%', left: 0, background: '#fff', minWidth: '200px', borderRadius: '6px', marginTop: '8px', boxShadow: '0 4px 16px rgba(0,0,0,.12)', zIndex: 1000, border: '1px solid #f0f0f0' }}>
                                 {otherServices.map((service) => (
                                     <a
                                         key={service}
                                         href="#"
-                                        style={{ display: 'block', padding: '12px 15px', color: '#fff', textDecoration: 'none', fontSize: '13px', borderBottom: '1px solid rgba(255,255,255,.1)', transition: 'background 0.3s' }}
-                                        onMouseEnter={(e) => (e.currentTarget.style.background = '#1a1f3a')}
+                                        style={{ display: 'block', padding: '12px 15px', color: '#333', textDecoration: 'none', fontSize: '13px', borderBottom: '1px solid #f5f5f5', transition: 'background 0.3s' }}
+                                        onMouseEnter={(e) => (e.currentTarget.style.background = '#f9f9f9')}
                                         onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                                     >
                                         {service}
@@ -242,20 +215,20 @@ export default function LandingLayout({ children }: Props) {
                         )}
                     </li>
 
-                    <li><Link href="/about-us" style={{ color: '#fff', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>About Us</Link></li>
-                    <li><Link href="/contact-us" style={{ color: '#fff', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>Contact Us</Link></li>
+                    <li><Link href="/about-us" style={{ color: '#333', fontSize: '14px', fontWeight: 500, textDecoration: 'none', transition: 'color 0.3s' }} onMouseEnter={(e) => e.currentTarget.style.color = '#ff6b35'} onMouseLeave={(e) => e.currentTarget.style.color = '#333'}>About Us</Link></li>
+                    <li><Link href="/contact-us" style={{ color: '#333', fontSize: '14px', fontWeight: 500, textDecoration: 'none', transition: 'color 0.3s' }} onMouseEnter={(e) => e.currentTarget.style.color = '#ff6b35'} onMouseLeave={(e) => e.currentTarget.style.color = '#333'}>Contact Us</Link></li>
                 </ul>
-                <a className="navbar-cta" href="tel:+1234567890" style={{ background: '#ff6b35', color: '#fff', padding: '10px 22px', borderRadius: '4px', fontWeight: 700, fontSize: '13px', textDecoration: 'none', cursor: 'pointer' }}>CALL NOW</a>
+                <a className="navbar-cta" href="tel:+1234567890" style={{ background: '#ff6b35', color: '#fff', padding: '10px 22px', borderRadius: '4px', fontWeight: 700, fontSize: '13px', textDecoration: 'none', cursor: 'pointer', transition: 'all 0.3s' }} onMouseEnter={(e) => e.currentTarget.style.background = '#e85a24'} onMouseLeave={(e) => e.currentTarget.style.background = '#ff6b35'}>CALL NOW</a>
             </nav>
 
             {/* MOBILE MENU */}
-            <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`} style={{ background: '#002d63', borderTop: '1px solid rgba(255,255,255,.1)' }}>
+            <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`} style={{ background: '#fff', borderTop: '1px solid #f0f0f0' }}>
                 <ul style={{ display: 'flex', flexDirection: 'column', gap: '10px', listStyle: 'none', margin: 0, padding: '15px 15px', textAlign: 'center' }}>
                     <li><Link href="/" style={{ color: '#ff6b35', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>Home</Link></li>
-                    <li><Link href="/tours" style={{ color: '#fff', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>Tours</Link></li>
-                    <li><Link href="/tickets" style={{ color: '#fff', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>Tickets</Link></li>
-                    <li><Link href="/about-us" style={{ color: '#fff', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>About Us</Link></li>
-                    <li><Link href="/contact-us" style={{ color: '#fff', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>Contact Us</Link></li>
+                    <li><Link href="/tours" style={{ color: '#333', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>Tours</Link></li>
+                    <li><Link href="/tickets" style={{ color: '#333', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>Tickets</Link></li>
+                    <li><Link href="/about-us" style={{ color: '#333', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>About Us</Link></li>
+                    <li><Link href="/contact-us" style={{ color: '#333', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>Contact Us</Link></li>
                     <li><a href="tel:+1234567890" style={{ background: '#ff6b35', color: '#fff', padding: '8px 15px', borderRadius: '4px', fontWeight: 700, fontSize: '13px', textDecoration: 'none', display: 'inline-block' }}>CALL NOW</a></li>
                 </ul>
             </div>
