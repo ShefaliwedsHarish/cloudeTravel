@@ -12,10 +12,10 @@ Route::inertia('/flights', 'frontend/flight/flight')->name('flights');
 Route::inertia('/hotels', 'frontend/hotel/hotels')->name('hotels');
 Route::inertia('/visas', 'frontend/visa/visas')->name('visas');
 
-// Search results routes
-Route::post('/search/flight', [SearchController::class, 'flightSearch'])->name('search.flight');
-Route::post('/search/hotel', [SearchController::class, 'hotelSearch'])->name('search.hotel');
-Route::post('/search/visa', [SearchController::class, 'visaSearch'])->name('search.visa');
+// Search results routes - Accept both GET and POST
+Route::match(['get', 'post'], '/search/flight', [SearchController::class, 'flightSearch'])->name('search.flight');
+Route::match(['get', 'post'], '/search/hotel', [SearchController::class, 'hotelSearch'])->name('search.hotel');
+Route::match(['get', 'post'], '/search/visa', [SearchController::class, 'visaSearch'])->name('search.visa');
 Route::inertia('/tours/{id}', 'TourDetail')->name('tours.show');
 Route::inertia('/tours', 'tours')->name('tours');
 Route::inertia('/tickets', 'tickets')->name('tickets');

@@ -2,7 +2,6 @@ import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function VisaResults({ searchParams }: any) {
-    const [step, setStep] = useState(1);
     const [submitted, setSubmitted] = useState(false);
     const [formData, setFormData] = useState({
         firstName: '',
@@ -16,15 +15,12 @@ export default function VisaResults({ searchParams }: any) {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleNext = () => {
-        if (step < 4) setStep(step + 1);
-    };
-
-    const handlePrev = () => {
-        if (step > 1) setStep(step - 1);
-    };
-
     const handleSubmit = async () => {
+        if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
+            alert('Please fill in all fields');
+            return;
+        }
+
         try {
             const response = await fetch('/api/bookings', {
                 method: 'POST',
@@ -89,202 +85,150 @@ export default function VisaResults({ searchParams }: any) {
                         </div>
                     </div>
                 ) : (
-                    <>
-                        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-                            <h1 style={{ fontSize: '28px', color: '#003d82', marginBottom: '10px', textAlign: 'center' }}>
-                                🛂 Complete Your Visa Application
-                            </h1>
-                            <p style={{ color: '#666', marginBottom: '30px', textAlign: 'center' }}>
-                                {searchParams.destination} | Travel Date: {searchParams.travelDate}
-                            </p>
+                    <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+                        <h1 style={{ fontSize: '28px', color: '#003d82', marginBottom: '10px', textAlign: 'center' }}>
+                            🛂 Complete Your Visa Application
+                        </h1>
+                        <p style={{ color: '#666', marginBottom: '30px', textAlign: 'center' }}>
+                            {searchParams.destinationCountry} | Travel Date: {searchParams.travelDate}
+                        </p>
 
-                            <div style={{ background: '#f8fafb', padding: '30px', borderRadius: '8px', border: '1px solid #ddd' }}>
-                                {/* Step Indicator */}
-                                <div style={{ display: 'flex', gap: '10px', marginBottom: '30px' }}>
-                                    {[1, 2, 3].map(s => (
-                                        <div
-                                            key={s}
+                        {/* Two-Section Form Layout - Side by Side */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', background: '#f8fafb', padding: '30px', borderRadius: '8px', border: '1px solid #ddd' }}>
+                            {/* Section 1: Personal Information */}
+                            <div>
+                                <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#003d82', marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <span style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#0066cc', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: 700 }}>1</span>
+                                    Personal Information
+                                </h3>
+                                <div style={{ display: 'grid', gap: '14px' }}>
+                                    <div>
+                                        <label style={{ display: 'block', fontSize: '12px', color: '#666', marginBottom: '6px', fontWeight: 600 }}>First Name</label>
+                                        <input
+                                            type="text"
+                                            name="firstName"
+                                            placeholder="Enter your first name"
+                                            value={formData.firstName}
+                                            onChange={handleInputChange}
                                             style={{
-                                                width: '40px',
-                                                height: '40px',
-                                                borderRadius: '50%',
-                                                background: step >= s ? '#0066cc' : '#ddd',
-                                                color: '#fff',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                fontWeight: 700,
-                                                fontSize: '14px',
+                                                width: '100%',
+                                                padding: '12px',
+                                                border: '1.5px solid #ddd',
+                                                borderRadius: '6px',
+                                                fontSize: '13px',
+                                                boxSizing: 'border-box',
+                                                transition: 'border-color 0.3s',
                                             }}
-                                        >
-                                            {s}
-                                        </div>
-                                    ))}
+                                            onFocus={(e) => e.currentTarget.style.borderColor = '#0066cc'}
+                                            onBlur={(e) => e.currentTarget.style.borderColor = '#ddd'}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label style={{ display: 'block', fontSize: '12px', color: '#666', marginBottom: '6px', fontWeight: 600 }}>Last Name</label>
+                                        <input
+                                            type="text"
+                                            name="lastName"
+                                            placeholder="Enter your last name"
+                                            value={formData.lastName}
+                                            onChange={handleInputChange}
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px',
+                                                border: '1.5px solid #ddd',
+                                                borderRadius: '6px',
+                                                fontSize: '13px',
+                                                boxSizing: 'border-box',
+                                                transition: 'border-color 0.3s',
+                                            }}
+                                            onFocus={(e) => e.currentTarget.style.borderColor = '#0066cc'}
+                                            onBlur={(e) => e.currentTarget.style.borderColor = '#ddd'}
+                                        />
+                                    </div>
                                 </div>
+                            </div>
 
-                                {/* Step 1: Personal Info */}
-                                {step === 1 && (
+                            {/* Section 2: Contact Information */}
+                            <div>
+                                <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#003d82', marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <span style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#0066cc', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: 700 }}>2</span>
+                                    Contact Information
+                                </h3>
+                                <div style={{ display: 'grid', gap: '14px' }}>
                                     <div>
-                                        <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#333', marginBottom: '15px' }}>
-                                            Personal Information
-                                        </h3>
-                                        <div style={{ display: 'grid', gap: '12px' }}>
-                                            <input
-                                                type="text"
-                                                name="firstName"
-                                                placeholder="First Name"
-                                                value={formData.firstName}
-                                                onChange={handleInputChange}
-                                                style={{
-                                                    width: '100%',
-                                                    padding: '10px',
-                                                    border: '1px solid #ddd',
-                                                    borderRadius: '4px',
-                                                    fontSize: '12px',
-                                                }}
-                                            />
-                                            <input
-                                                type="text"
-                                                name="lastName"
-                                                placeholder="Last Name"
-                                                value={formData.lastName}
-                                                onChange={handleInputChange}
-                                                style={{
-                                                    width: '100%',
-                                                    padding: '10px',
-                                                    border: '1px solid #ddd',
-                                                    borderRadius: '4px',
-                                                    fontSize: '12px',
-                                                }}
-                                            />
-                                        </div>
+                                        <label style={{ display: 'block', fontSize: '12px', color: '#666', marginBottom: '6px', fontWeight: 600 }}>Email ID</label>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            placeholder="Enter your email"
+                                            value={formData.email}
+                                            onChange={handleInputChange}
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px',
+                                                border: '1.5px solid #ddd',
+                                                borderRadius: '6px',
+                                                fontSize: '13px',
+                                                boxSizing: 'border-box',
+                                                transition: 'border-color 0.3s',
+                                            }}
+                                            onFocus={(e) => e.currentTarget.style.borderColor = '#0066cc'}
+                                            onBlur={(e) => e.currentTarget.style.borderColor = '#ddd'}
+                                        />
                                     </div>
-                                )}
-
-                                {/* Step 2: Contact Info */}
-                                {step === 2 && (
                                     <div>
-                                        <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#333', marginBottom: '15px' }}>
-                                            Contact Information
-                                        </h3>
-                                        <div style={{ display: 'grid', gap: '12px' }}>
-                                            <input
-                                                type="email"
-                                                name="email"
-                                                placeholder="Email ID"
-                                                value={formData.email}
-                                                onChange={handleInputChange}
-                                                style={{
-                                                    width: '100%',
-                                                    padding: '10px',
-                                                    border: '1px solid #ddd',
-                                                    borderRadius: '4px',
-                                                    fontSize: '12px',
-                                                }}
-                                            />
-                                            <input
-                                                type="tel"
-                                                name="phone"
-                                                placeholder="Phone Number"
-                                                value={formData.phone}
-                                                onChange={handleInputChange}
-                                                style={{
-                                                    width: '100%',
-                                                    padding: '10px',
-                                                    border: '1px solid #ddd',
-                                                    borderRadius: '4px',
-                                                    fontSize: '12px',
-                                                }}
-                                            />
-                                        </div>
+                                        <label style={{ display: 'block', fontSize: '12px', color: '#666', marginBottom: '6px', fontWeight: 600 }}>Phone Number</label>
+                                        <input
+                                            type="tel"
+                                            name="phone"
+                                            placeholder="Enter your phone number"
+                                            value={formData.phone}
+                                            onChange={handleInputChange}
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px',
+                                                border: '1.5px solid #ddd',
+                                                borderRadius: '6px',
+                                                fontSize: '13px',
+                                                boxSizing: 'border-box',
+                                                transition: 'border-color 0.3s',
+                                            }}
+                                            onFocus={(e) => e.currentTarget.style.borderColor = '#0066cc'}
+                                            onBlur={(e) => e.currentTarget.style.borderColor = '#ddd'}
+                                        />
                                     </div>
-                                )}
-
-                                {/* Step 3: Review & Confirm */}
-                                {step === 3 && (
-                                    <div>
-                                        <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#333', marginBottom: '15px' }}>
-                                            Review & Confirm
-                                        </h3>
-                                        <div style={{ display: 'grid', gap: '10px', fontSize: '12px', color: '#666' }}>
-                                            <p>
-                                                <strong>Name:</strong> {formData.firstName} {formData.lastName}
-                                            </p>
-                                            <p>
-                                                <strong>Email:</strong> {formData.email}
-                                            </p>
-                                            <p>
-                                                <strong>Phone:</strong> {formData.phone}
-                                            </p>
-                                            <div style={{ marginTop: '15px', padding: '10px', background: '#fff', borderRadius: '4px' }}>
-                                                <p style={{ fontSize: '11px', color: '#999' }}>
-                                                    Please review your information before submitting the visa application.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Navigation Buttons */}
-                                <div style={{ display: 'flex', gap: '10px', marginTop: '30px' }}>
-                                    {step > 1 && (
-                                        <button
-                                            onClick={handlePrev}
-                                            style={{
-                                                flex: 1,
-                                                padding: '10px',
-                                                background: '#fff',
-                                                color: '#0066cc',
-                                                border: '1px solid #0066cc',
-                                                borderRadius: '4px',
-                                                cursor: 'pointer',
-                                                fontSize: '12px',
-                                                fontWeight: 700,
-                                            }}
-                                        >
-                                            ← Previous
-                                        </button>
-                                    )}
-                                    {step < 3 && (
-                                        <button
-                                            onClick={handleNext}
-                                            style={{
-                                                flex: 1,
-                                                padding: '10px',
-                                                background: '#0066cc',
-                                                color: '#fff',
-                                                border: 'none',
-                                                borderRadius: '4px',
-                                                cursor: 'pointer',
-                                                fontSize: '12px',
-                                                fontWeight: 700,
-                                            }}
-                                        >
-                                            Next →
-                                        </button>
-                                    )}
-                                    {step === 3 && (
-                                        <button
-                                            onClick={handleSubmit}
-                                            style={{
-                                                flex: 1,
-                                                padding: '10px',
-                                                background: '#ff6b35',
-                                                color: '#fff',
-                                                border: 'none',
-                                                borderRadius: '4px',
-                                                cursor: 'pointer',
-                                                fontSize: '12px',
-                                                fontWeight: 700,
-                                            }}
-                                        >
-                                            ✓ Submit Application
-                                        </button>
-                                    )}
                                 </div>
                             </div>
                         </div>
-                    </>
+
+                        {/* Submit Button */}
+                        <div style={{ marginTop: '30px', textAlign: 'center' }}>
+                            <button
+                                onClick={handleSubmit}
+                                style={{
+                                    background: 'linear-gradient(135deg, #ff6b35 0%, #e85a24 100%)',
+                                    color: '#fff',
+                                    border: 'none',
+                                    padding: '14px 60px',
+                                    borderRadius: '6px',
+                                    fontSize: '15px',
+                                    fontWeight: 700,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                    boxShadow: '0 4px 16px rgba(255, 107, 53, 0.3)',
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(-2px)';
+                                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(255, 107, 53, 0.4)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.boxShadow = '0 4px 16px rgba(255, 107, 53, 0.3)';
+                                }}
+                            >
+                                ✓ Submit Application
+                            </button>
+                        </div>
+                    </div>
                 )}
             </div>
         </>
